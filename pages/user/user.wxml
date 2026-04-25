@@ -1,0 +1,39 @@
+<view class="container">
+  <view class="card">
+    <view class="avatar"></view>
+    <text class="name">{{user.nickname}}</text>
+    <text class="level">LV.{{user.level}} · {{user.sign}}</text>
+  </view>
+
+  <view class="data">
+    <view>
+      <text class="num">{{user.postNum}}</text>
+      <text class="label">帖子</text>
+    </view>
+    <view>
+      <text class="num">{{user.likeNum}}</text>
+      <text class="label">获赞</text>
+    </view>
+    <view>
+      <text class="num">{{user.favNum}}</text>
+      <text class="label">收藏</text>
+    </view>
+  </view>
+
+  <view class="tab">
+    <text class="{{tab==0?'on':''}}" bindtap="setTab" data-i="0">发布</text>
+    <text class="{{tab==1?'on':''}}" bindtap="setTab" data-i="1">点赞过</text>
+    <text class="{{tab==2?'on':''}}" bindtap="setTab" data-i="2">评论过</text>
+  </view>
+
+  <view class="list">
+    <view class="item" wx:for="{{list}}" wx:key="id" bindtap="goPost" data-id="{{item.id}}">
+      <view class="txt">{{item.content}}</view>
+      <view class="priv" wx:if="{{item.private}}">私密</view>
+    </view>
+  </view>
+
+  <view class="setting" wx:if="{{isMe}}">
+    <button bindtap="setPrivacy">隐私设置</button>
+  </view>
+</view>

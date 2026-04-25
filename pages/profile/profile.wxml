@@ -1,0 +1,62 @@
+<view class="container">
+  <!-- 等级区域（点击查看奖励） -->
+  <view class="level-card" bindtap="showLevelReward">
+    <view class="level-title">当前等级</view>
+    <view class="level-name">{{levelName}}</view>
+    <view class="exp">经验：{{exp}} / {{nextExp}}</view>
+  </view>
+
+  <!-- 任务中心 -->
+  <view class="section">
+    <view class="title">任务中心</view>
+    <view class="task-item" wx:for="{{taskList}}" wx:key="id">
+      <view>{{item.title}}</view>
+      <view>+{{item.exp}}经验</view>
+    </view>
+  </view>
+
+  <!-- 我的数据（移到这里） -->
+  <view class="section">
+    <view class="title">我的数据</view>
+    <view class="data-item">
+      <view>经期记录</view>
+      <view>{{periodCount}}次</view>
+    </view>
+    <view class="data-item">
+      <view>学习打卡</view>
+      <view>{{studyCount}}天</view>
+    </view>
+    <view class="data-item">
+      <view>发帖</view>
+      <view>{{postCount}}条</view>
+    </view>
+  </view>
+
+  <!-- 个性化设置 -->
+  <view class="section">
+    <view class="title">主题与背景</view>
+    <view class="lock-item" wx:if="{{level<2}}">2级解锁多人房间</view>
+    <view class="lock-item" wx:if="{{level<5}}">5级解锁自定义背景+透明度</view>
+    <view class="item" wx:if="{{level>=5}}">
+      <text>上传背景图片</text>
+      <slider min="10" max="100" value="80" show-value></slider>
+    </view>
+  </view>
+
+  <!-- 设置放在最下面 -->
+  <view class="section last">
+    <view class="title">设置</view>
+    <view class="item" bindtap="goFeedback">意见反馈</view>
+    <view class="item" bindtap="clearData">清空本地数据</view>
+  </view>
+
+  <!-- 等级奖励弹窗 -->
+  <view class="mask" wx:if="{{showReward}}"></view>
+  <view class="reward-panel" wx:if="{{showReward}}">
+    <view class="panel-title">等级奖励</view>
+    <view class="reward-item" wx:for="{{rewardList}}" wx:key="level">
+      <text>{{item.level}}级：{{item.reward}}</text>
+    </view>
+    <button class="close-btn" bindtap="closeReward">关闭</button>
+  </view>
+</view>

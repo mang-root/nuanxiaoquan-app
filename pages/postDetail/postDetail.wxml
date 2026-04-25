@@ -1,0 +1,106 @@
+<!-- pages/postDetail/postDetail.wxml -->
+<view class="detail-page">
+
+  <view wx:if="{{!post}}" class="empty-state">
+    <text class="empty-text">帖子不存在或已删除</text>
+  </view>
+
+  <block wx:if="{{post}}">
+    <!-- 顶部作者信息 -->
+    <view class="author-bar">
+      <view class="avatar-placeholder" style="background: {{post.avatarColor || '#FFD4DF'}};">
+        <text class="avatar-letter">{{post.authorNickname ? post.authorNickname.substring(0,1) : '同'}}</text>
+      </view>
+      <view class="author-info">
+        <text class="author-name">{{post.authorNickname}}</text>
+        <text class="author-level">{{post.authorLevelName || '新序'}}</text>
+      </view>
+      <view class="collect-author" bindtap="collectAuthor">
+        <text>收藏 TA</text>
+      </view>
+    </view>
+
+    <!-- 图片轮播 -->
+    <swiper wx:if="{{post.images && post.images.length > 0}}" class="image-swiper" indicator-dots="{{post.images.length > 1}}" autoplay="{{false}}" circular="{{false}}" style="height: 560rpx;">
+      <swiper-item wx:for="{{post.images}}" wx:key="*this">
+        <image src="{{item}}" mode="aspectFill" class="swiper-img" bindtap="previewImage" data-url="{{item}}" />
+      </swiper-item>
+    </swiper>
+
+    <!-- 正文 -->
+    <view class="content-area">
+      <text class="post-title">{{post.title}}</text>
+
+      <view class="post-tags">
+        <text class="tag tag-learn">{{post.categoryName}}</text>
+      </view>
+
+      <text class="post-content">{{post.content}}</text>
+
+      <text class="post-time">{{createdTime}}</text>
+    </view>
+
+    <view class="divider"></view>
+
+    <!-- 评论区 -->
+    <view class="comments-area">
+      <view class="comments-title">
+        <text>评论 {{commentCount}}</text>
+      </view>
+
+      <view wx:if="{{!comments || comments.length === 0}}" class="no-comments">
+        <text>还没有评论,来第一个吧</text>
+      </view>
+
+      <view wx:for="{{comments}}" wx:key="id" class="comment-item">
+        <view class="avatar-placeholder avatar-sm" style="background: {{item.avatarColor || '#D4E4FF'}};">
+          <text class="avatar-letter">{{item.nickname ? item.nickname.substring(0,1) : '同'}}</text>
+        </view>
+        <view class="comment-body">
+          <text class="comment-name">{{item.nickname}}</text>
+          <text class="comment-text">{{item.content}}</text>
+        </view>
+      </view>
+
+      <view style="height: 180rpx;"></view>
+    </view>
+
+    <!-- 底部固定操作栏 -->
+    <view class="bottom-bar">
+      <view class="comment-input-wrap" bindtap="openCommentInput">
+        <text class="comment-input-placeholder">说点什么...</text>
+      </view>
+      <view class="action-btn" bindtap="likePost">
+        <text class="action-icon {{post.liked ? 'active' : ''}}">{{post.liked ? '❤' : '♡'}}</text>
+        <text class="action-count">{{post.likeCount || 0}}</text>
+      </view>
+      <view class="action-btn" bindtap="collectPost">
+        <text class="action-icon {{post.collected ? 'active' : ''}}">{{post.collected ? '★' : '☆'}}</text>
+        <text class="action-count">{{post.collectCount || 0}}</text>
+      </view>
+      <view class="action-btn" bindtap="reportPost">
+        <text class="action-icon">⚐</text>
+      </view>
+    </view>
+  </block>
+
+  <!-- 评论输入弹层 -->
+  <view wx:if="{{commentSheetShow}}" class="mask" bindtap="closeCommentInput">
+    <view class="comment-sheet" catchtap="">
+      <textarea
+        class="comment-textarea"
+        placeholder="留下你的评论..."
+        value="{{commentInput}}"
+        bindinput="onCommentInput"
+        maxlength="200"
+        focus="{{commentSheetShow}}"
+        adjust-position="{{true}}"
+      ></textarea>
+      <view class="comment-sheet-actions">
+        <text class="comment-count-tip">{{commentInput ? commentInput.length : 0}}/200</text>
+        <view class="btn-primary" bindtap="submitComment">发送</view>
+      </view>
+    </view>
+  </view>
+
+</view>

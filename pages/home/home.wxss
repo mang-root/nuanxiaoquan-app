@@ -1,0 +1,130 @@
+.container{
+  background: #ffffff;
+  padding: 20rpx;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+.top-bar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding: 10rpx 0;
+}
+.tab-switch{
+  display: flex;
+  gap: 20rpx;
+}
+.tab{
+  font-size: 30rpx;
+  color: #666;
+  padding: 10rpx 20rpx;
+}
+.tab.on{
+  color: #ff8da8;
+  font-weight: bold;
+  border-bottom: 3rpx solid #ff8da8;
+}
+.filter-btn{
+  font-size: 28rpx;
+  color: #333;
+  padding: 10rpx 20rpx;
+  background: #f5f5f5;
+  border-radius: 30rpx;
+}
+.cate-scroll{
+  white-space: nowrap;
+  margin-bottom: 30rpx;
+  width: 100%;
+}
+.cate{
+  display: inline-block;
+  padding: 14rpx 26rpx;
+  background: #f9f9f9;
+  border-radius: 50rpx;
+  font-size: 26rpx;
+  margin-right: 16rpx;
+  color: #333;
+}
+.cate.on{
+  background: #ff8da8;
+  color: #fff;
+}
+.list{
+  padding-bottom: 40rpx;
+}
+.card{
+  background: #f9f9f9;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-sizing: border-box;
+}
+.user-bar{
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+.avatar{
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: #ffd6e0;
+  margin-right: 20rpx;
+}
+.info{
+  display: flex;
+  flex-direction: column;
+}
+.name{
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+.level{
+  font-size: 22rpx;
+  color: #ff8da8;
+  margin-top: 6rpx;
+}
+.content{
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 20rpx;
+}
+.action{
+  display: flex;
+  gap: 40rpx;
+  color: #666;
+  font-size: 24rpx;
+}
+.mask{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 10;
+}
+.filter-panel{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 20rpx;
+  width: 70%;
+  z-index: 11;
+  overflow: hidden;
+}
+.filter-panel .item{
+  padding: 30rpx;
+  text-align: center;
+  font-size: 28rpx;
+  color: #333;
+  border-bottom: 1rpx solid #eee;
+}
+.filter-panel .item:last-child{
+  border-bottom: none;
+}

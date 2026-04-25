@@ -1,0 +1,106 @@
+<view class="profile-page">
+
+<!-- 顶部信息区 -->
+<view class="profile-top">
+  <view class="profile-avatar" style="background: {{profile.avatarColor}};">
+    <text class="profile-letter">{{profile.nickname ? profile.nickname.substring(0,1) : '同'}}</text>
+  </view>
+
+  <view class="profile-info">
+    <text class="profile-name">{{profile.nickname}}</text>
+    <view class="profile-level" bindtap="gotoLevel">
+      <text class="level-badge">Lv.{{profile.level}} · {{profile.levelName}}</text>
+    </view>
+    <text wx:if="{{profile.signature}}" class="profile-sign">{{profile.signature}}</text>
+  </view>
+
+  <view wx:if="{{isSelf}}" class="edit-btn" bindtap="editProfile">编辑资料</view>
+</view>
+
+<!-- 数据统计 -->
+<view class="stats-row">
+  <view class="stat-col">
+    <text class="stat-n">{{stats.postCount}}</text>
+    <text class="stat-l">帖子</text>
+  </view>
+  <view class="stat-col">
+    <text class="stat-n">{{stats.resourceCount}}</text>
+    <text class="stat-l">资源</text>
+  </view>
+  <view class="stat-col">
+    <text class="stat-n">{{stats.likedCount}}</text>
+    <text class="stat-l">获赞</text>
+  </view>
+  <view class="stat-col">
+    <text class="stat-n">{{stats.collectCount}}</text>
+    <text class="stat-l">被收藏</text>
+  </view>
+</view>
+
+<!-- Tab:帖子 / 资源 -->
+<view class="tabs">
+  <view class="tab {{activeTab === 'post' ? 'active' : ''}}" bindtap="switchTab" data-tab="post">
+    帖子({{stats.postCount}})
+  </view>
+  <view class="tab {{activeTab === 'resource' ? 'active' : ''}}" bindtap="switchTab" data-tab="resource">
+    资源({{stats.resourceCount}})
+  </view>
+</view>
+
+<!-- 内容区 -->
+<view class="content-area">
+
+  <block wx:if="{{activeTab === 'post'}}">
+    <view wx:if="{{posts.length === 0}}" class="empty">
+      <text class="empty-text">{{isSelf ? '还没有发过帖子' : 'TA 还没有发过帖子'}}</text>
+    </view>
+    <view class="card-list">
+      <view
+        wx:for="{{posts}}"
+        wx:key="id"
+        class="card"
+        bindtap="gotoPostDetail"
+        data-id="{{item.id}}"
+      >
+        <view class="card-title">{{item.title || item.content}}</view>
+        <text class="card-content">{{item.content}}</text>
+        <view wx:if="{{item.images && item.images.length > 0}}" class="card-imgs">
+          <image wx:for="{{item.images}}" wx:for-item="img" wx:key="*this" src="{{img}}" mode="aspectFill" class="card-img" />
+        </view>
+        <view class="card-footer">
+          <text class="card-tag">{{item.categoryName}}</text>
+          <text class="card-stat">♡ {{item.likeCount || 0}}  💬 {{item.commentCount || 0}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <block wx:if="{{activeTab === 'resource'}}">
+    <view wx:if="{{resources.length === 0}}" class="empty">
+      <text class="empty-text">{{isSelf ? '还没有分享过资源' : 'TA 还没有分享过资源'}}</text>
+    </view>
+    <view class="card-list">
+      <view
+        wx:for="{{resources}}"
+        wx:key="id"
+        class="card"
+        bindtap="gotoResourceDetail"
+        data-id="{{item.id}}"
+      >
+        <view class="card-title">{{item.title}}</view>
+        <text class="card-content">{{item.content}}</text>
+        <view wx:if="{{item.images && item.images.length > 0}}" class="card-imgs">
+          <image wx:for="{{item.images}}" wx:for-item="img" wx:key="*this" src="{{img}}" mode="aspectFill" class="card-img" />
+        </view>
+        <view class="card-footer">
+          <text class="card-tag">{{item.category}}</text>
+          <text class="card-stat">★ {{item.collectCount || 0}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+</view>
+
+<view style="height: 60rpx;"></view>
+</view>

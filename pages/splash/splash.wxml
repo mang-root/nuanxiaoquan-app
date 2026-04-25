@@ -1,0 +1,6 @@
+<view class="splash-box">
+  <view class="logo-wrapper">
+    <text class="logo">暖小圈</text>
+    <text class="slogan">陪伴你的每一段时光 💛</text>
+  </view>
+</view>

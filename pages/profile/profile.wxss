@@ -1,0 +1,63 @@
+.container{
+  background:#fff;
+  padding:20rpx;
+  min-height:100vh;
+}
+.level-card{
+  background:#fff8fa;
+  border-radius:20rpx;
+  padding:40rpx;
+  text-align:center;
+  margin-bottom:30rpx;
+}
+.level-title{font-size:28rpx;color:#666;}
+.level-name{font-size:40rpx;font-weight:bold;color:#ff8da8;margin:10rpx 0;}
+.exp{font-size:26rpx;color:#666;}
+
+.section{
+  background:#f9f9f9;
+  border-radius:20rpx;
+  padding:30rpx;
+  margin-bottom:30rpx;
+}
+.section.last{margin-bottom:0;}
+.title{
+  font-size:32rpx;
+  margin-bottom:20rpx;
+}
+
+.task-item,.data-item,.item{
+  display:flex;
+  justify-content:space-between;
+  padding:20rpx 0;
+  border-bottom:1rpx solid #eee;
+  font-size:28rpx;
+}
+.lock-item{
+  padding:20rpx;
+  background:#f1f1f1;
+  border-radius:12rpx;
+  color:#666;
+  margin-bottom:10rpx;
+}
+
+/* 弹窗 */
+.mask{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,0.4);z-index:10;
+}
+.reward-panel{
+  position:fixed;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  background:#fff;border-radius:20rpx;
+  width:80%;padding:40rpx;z-index:11;
+}
+.panel-title{
+  text-align:center;font-size:32rpx;margin-bottom:20rpx;
+}
+.reward-item{
+  padding:16rpx 0;border-bottom:1rpx solid #eee;
+}
+.close-btn{
+  background:#ff8da8;color:#fff;border-radius:12rpx;margin-top:20rpx;
+}

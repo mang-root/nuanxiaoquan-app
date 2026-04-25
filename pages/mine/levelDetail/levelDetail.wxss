@@ -1,0 +1,264 @@
+/* pages/mine/levelDetail/levelDetail.wxss */
+
+.level-page {
+  background: #FAFAFA;
+  min-height: 100vh;
+}
+
+/* 顶部粉色渐变 */
+.hero {
+  background: linear-gradient(135deg, #FF8DA8 0%, #FFB5CD 100%);
+  padding: 48rpx 32rpx 56rpx;
+  color: #FFFFFF;
+  text-align: center;
+}
+.hero-label {
+  font-size: 22rpx;
+  opacity: 0.9;
+}
+.hero-lv {
+  display: block;
+  font-size: 64rpx;
+  font-weight: 600;
+  margin-top: 12rpx;
+}
+.hero-num {
+  display: block;
+  font-size: 24rpx;
+  opacity: 0.8;
+  margin-top: 6rpx;
+}
+.hero-bar-wrap {
+  margin-top: 32rpx;
+}
+.hero-bar {
+  height: 16rpx;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 8rpx;
+  overflow: hidden;
+  margin-bottom: 12rpx;
+}
+.hero-fill {
+  height: 100%;
+  background: #FFFFFF;
+  border-radius: 8rpx;
+}
+.hero-progress {
+  display: block;
+  font-size: 24rpx;
+  font-weight: 600;
+  margin-bottom: 4rpx;
+}
+.hero-next {
+  display: block;
+  font-size: 22rpx;
+  opacity: 0.9;
+}
+
+/* Tab */
+.tabs {
+  display: flex;
+  background: #FFFFFF;
+  padding: 0 16rpx;
+  border-bottom: 1rpx solid #F0F0F0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx 0;
+  font-size: 26rpx;
+  color: #999999;
+  position: relative;
+}
+.tab.active {
+  color: #333333;
+  font-weight: 600;
+}
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx;
+  height: 4rpx;
+  background: #FF8DA8;
+  border-radius: 2rpx;
+}
+
+/* 内容 */
+.content {
+  padding: 16rpx 24rpx;
+}
+
+/* 等级奖励列表 */
+.level-item {
+  background: #FFFFFF;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  border: 2rpx solid transparent;
+}
+.level-item.current {
+  border-color: #FF8DA8;
+  background: linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%);
+}
+.level-item.locked {
+  opacity: 0.6;
+}
+.lv-head {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+.lv-badge {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+.lv-badge-num {
+  color: #FFFFFF;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+.lv-title {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.lv-n {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333333;
+}
+.lv-req {
+  font-size: 22rpx;
+  color: #999999;
+  margin-top: 4rpx;
+}
+.lv-tag {
+  padding: 6rpx 16rpx;
+  border-radius: 100rpx;
+  font-size: 20rpx;
+}
+.current-tag {
+  background: #FF8DA8;
+  color: #FFFFFF;
+}
+.unlocked-tag {
+  background: #E8F7E9;
+  color: #7DCE82;
+}
+.locked-tag {
+  background: #F0F0F0;
+  color: #999999;
+}
+.lv-rewards {
+  padding-left: 8rpx;
+}
+.reward-row {
+  display: flex;
+  padding: 6rpx 0;
+}
+.reward-dot {
+  color: #FF8DA8;
+  margin-right: 8rpx;
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+.reward-text {
+  flex: 1;
+  font-size: 26rpx;
+  color: #666666;
+  line-height: 1.6;
+}
+
+/* 规则 */
+.rule-tip {
+  font-size: 24rpx;
+  color: #999999;
+  padding: 16rpx 8rpx;
+}
+.rule-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFFFFF;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  margin-bottom: 12rpx;
+}
+.rule-desc {
+  flex: 1;
+  font-size: 26rpx;
+  color: #333333;
+}
+.rule-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.rule-value {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #FF8DA8;
+}
+.rule-limit {
+  font-size: 20rpx;
+  color: #999999;
+  margin-top: 4rpx;
+}
+
+/* 流水 */
+.log-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFFFFF;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  margin-bottom: 12rpx;
+}
+.log-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.log-reason {
+  font-size: 26rpx;
+  color: #333333;
+}
+.log-time {
+  font-size: 20rpx;
+  color: #999999;
+  margin-top: 4rpx;
+}
+.log-value {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #7DCE82;
+}
+
+/* 空 */
+.empty-state {
+  padding: 120rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.empty-emoji {
+  font-size: 72rpx;
+  margin-bottom: 12rpx;
+}
+.empty-text {
+  font-size: 26rpx;
+  color: #999999;
+}

@@ -1,0 +1,29 @@
+<!-- pages/mine/messageCenter/messageCenter.wxml -->
+<view class="msg-page">
+
+  <view class="tabs">
+    <view class="tab {{activeTab === 'system' ? 'active' : ''}}" bindtap="switchTab" data-tab="system">系统</view>
+    <view class="tab {{activeTab === 'room' ? 'active' : ''}}" bindtap="switchTab" data-tab="room">自习室</view>
+    <view class="tab {{activeTab === 'interact' ? 'active' : ''}}" bindtap="switchTab" data-tab="interact">互动</view>
+    <view class="tab {{activeTab === 'shop' ? 'active' : ''}}" bindtap="switchTab" data-tab="shop">小馆</view>
+  </view>
+
+  <view class="content">
+    <view wx:if="{{messages[activeTab].length === 0}}" class="empty-state">
+      <text class="empty-emoji">📬</text>
+      <text class="empty-text">暂无消息</text>
+    </view>
+
+    <view wx:for="{{messages[activeTab]}}" wx:key="id" class="msg-item">
+      <view class="msg-dot" wx:if="{{item.unread}}"></view>
+      <view class="msg-body">
+        <text class="msg-title">{{item.title}}</text>
+        <text class="msg-desc">{{item.desc}}</text>
+        <text class="msg-time">{{item.time}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="clear-btn" bindtap="clearAll" wx:if="{{messages[activeTab].length > 0}}">全部已读</view>
+
+</view>

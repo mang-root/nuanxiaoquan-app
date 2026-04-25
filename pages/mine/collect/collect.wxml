@@ -1,0 +1,74 @@
+<view class="collect-page">
+  <!-- 顶部标签栏 -->
+  <view class="tab-bar">
+    <view 
+      class="tab-item {{activeTab === 0 ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-id="0"
+    >
+      帖子 ({{posts.length}})
+    </view>
+    <view 
+      class="tab-item {{activeTab === 1 ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-id="1"
+    >
+      资源 ({{resources.length}})
+    </view>
+    <view 
+      class="tab-item {{activeTab === 2 ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-id="2"
+    >
+      收藏夹 ({{folders.length}})
+    </view>
+  </view>
+
+  <!-- 帖子列表 -->
+  <view wx:if="{{activeTab === 0}}" class="list-area">
+    <view wx:if="{{posts.length === 0}}" class="empty">暂无收藏的帖子</view>
+    <view wx:else class="post-list">
+      <!-- 这里直接复用你首页帖子的卡片代码 -->
+      <!-- 你把首页帖子的wx:for代码复制过来就行 -->
+    </view>
+  </view>
+
+  <!-- 资源列表 -->
+  <view wx:if="{{activeTab === 1}}" class="list-area">
+    <view wx:if="{{resources.length === 0}}" class="empty">暂无收藏的资源</view>
+    <view wx:else class="resource-list">
+      <!-- 这里直接复用你小馆资源的卡片代码 -->
+      <!-- 你把小馆的瀑布流代码复制过来就行 -->
+    </view>
+  </view>
+
+  <!-- 收藏夹列表 -->
+  <view wx:if="{{activeTab === 2}}" class="list-area">
+    <view class="folder-list">
+      <view 
+        wx:for="{{folders}}" 
+        wx:key="id" 
+        class="folder-item"
+        bindtap="goToFolderDetail"
+        data-id="{{item.id}}"
+        data-name="{{item.name}}"
+        bindlongpress="longPressFolder"
+        data-id="{{item.id}}"
+      >
+        <text class="folder-icon">📁</text>
+        <view class="folder-info">
+          <text class="folder-name">{{item.name}}</text>
+          <text class="folder-count">
+            {{(posts.filter(p => p.folderId === item.id).length + resources.filter(r => r.folderId === item.id).length)}} 项内容
+          </text>
+        </view>
+        <text class="item-arrow">></text>
+      </view>
+    </view>
+    
+    <view class="add-folder-btn" bindtap="addFolder">
+      <text class="add-icon">＋</text>
+      <text>新建收藏夹</text>
+    </view>
+  </view>
+</view>

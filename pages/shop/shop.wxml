@@ -1,0 +1,172 @@
+<!-- pages/shop/shop.wxml -->
+<view class="shop-page">
+
+<!-- 搜索 -->
+<view class="top-search">
+  <view class="search-box">
+    <text class="search-icon">🔍</text>
+    <input
+      class="search-input"
+      placeholder="搜索笔记、资料、方法"
+      value="{{searchKeyword}}"
+      bindinput="onSearch"
+      bindconfirm="onSearchConfirm"
+      confirm-type="search"
+    />
+    <text wx:if="{{searchKeyword}}" class="search-clear" bindtap="clearSearch">×</text>
+  </view>
+</view>
+
+<!-- 分类 -->
+<scroll-view class="category-bar" scroll-x="true" enhanced="true" show-scrollbar="{{false}}">
+  <view
+    wx:for="{{categories}}"
+    wx:key="id"
+    class="cat-item {{activeCate === item.id ? 'active' : ''}}"
+    bindtap="switchCate"
+    data-id="{{item.id}}"
+  >
+    <text>{{item.name}}</text>
+  </view>
+</scroll-view>
+
+<!-- 资源瀑布流 -->
+<scroll-view class="waterfall" scroll-y="true" enhanced="true" show-scrollbar="{{false}}">
+
+  <view wx:if="{{leftColumn.length === 0 && rightColumn.length === 0}}" class="empty-state">
+    <text class="empty-emoji">📚</text>
+    <text class="empty-text">这里还没有资源</text>
+    <text class="empty-sub">点右下角 + 分享你的第一份学习资料</text>
+  </view>
+
+  <view wx:else class="columns">
+    <view class="column">
+      <view
+        wx:for="{{leftColumn}}"
+        wx:key="id"
+        class="res-card"
+        bindtap="gotoDetail"
+        data-id="{{item.id}}"
+      >
+        <view wx:if="{{item.images && item.images.length > 0}}" class="rc-cover">
+          <image src="{{item.images[0]}}" mode="widthFix" />
+        </view>
+        <view wx:else class="rc-cover-placeholder cover-{{item.id % 5}}">
+          <text class="cover-emoji">{{item.category === '笔记' ? '📝' : item.category === '资料' ? '📚' : item.category === '心得' ? '💡' : '📖'}}</text>
+        </view>
+        
+        <!-- 分类标签 -->
+        <text class="res-cate">{{item.category}}</text>
+
+        <view class="rc-content">
+          <text class="rc-title">{{item.title}}</text>
+          <view class="rc-footer">
+            <view class="rc-author" catchtap="gotoAuthorProfile" data-nickname="{{item.authorNickname}}" data-color="{{item.authorAvatarColor || '#FFD4DF'}}">
+              <view class="mini-avatar" style="background: {{item.authorAvatarColor || '#FFD4DF'}};">
+                <text class="mini-letter">{{item.authorNickname ? item.authorNickname.substring(0,1) : '同'}}</text>
+              </view>
+              <text class="author-name">{{item.authorNickname}}</text>
+            </view>
+            <view class="collect-btn" catchtap="toggleCollect" data-id="{{item.id}}">
+              <text class="collect-icon">{{item.collected ? '★' : '☆'}}</text>
+              <text class="collect-count">{{item.collectCount || 0}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="column">
+      <view
+        wx:for="{{rightColumn}}"
+        wx:key="id"
+        class="res-card"
+        bindtap="gotoDetail"
+        data-id="{{item.id}}"
+      >
+        <view wx:if="{{item.images && item.images.length > 0}}" class="rc-cover">
+          <image src="{{item.images[0]}}" mode="widthFix" />
+        </view>
+        <view wx:else class="rc-cover-placeholder cover-{{item.id % 5}}">
+          <text class="cover-emoji">{{item.category === '笔记' ? '📝' : item.category === '资料' ? '📚' : item.category === '心得' ? '💡' : '📖'}}</text>
+        </view>
+        
+        <!-- 分类标签 -->
+        <text class="res-cate">{{item.category}}</text>
+
+        <view class="rc-content">
+          <text class="rc-title">{{item.title}}</text>
+          <view class="rc-footer">
+            <view class="rc-author">
+              <view class="mini-avatar" style="background: {{item.authorAvatarColor || '#D4E4FF'}};">
+                <text class="mini-letter">{{item.authorNickname ? item.authorNickname.substring(0,1) : '同'}}</text>
+              </view>
+              <text class="author-name">{{item.authorNickname}}</text>
+            </view>
+            <view class="collect-btn" catchtap="toggleCollect" data-id="{{item.id}}">
+              <text class="collect-icon">{{item.collected ? '★' : '☆'}}</text>
+              <text class="collect-count">{{item.collectCount || 0}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view style="height: 120rpx;"></view>
+</scroll-view>
+
+<!-- 悬浮发布按钮 -->
+<view class="fab-publish" bindtap="openPublishSheet">
+  <text class="fab-icon">＋</text>
+</view>
+
+<!-- 发布弹层 -->
+<view wx:if="{{publishSheetShow}}" class="mask" bindtap="closePublishSheet"></view>
+<view wx:if="{{publishSheetShow}}" class="publish-sheet" catchtap="">
+    <view class="sheet-header">
+      <text class="sheet-title">分享学习资源</text>
+      <view class="sheet-close" bindtap="closePublishSheet">×</view>
+    </view>
+
+    <view class="form-row">
+      <text class="form-label">标题</text>
+      <input class="input-base" placeholder="如:考研英语核心词汇笔记" bindinput="onPubTitle" value="{{publishForm.title}}" maxlength="30" />
+    </view>
+
+    <view class="form-row">
+      <text class="form-label">分类 *</text>
+      <picker range="{{['笔记','资料','心得','其他']}}" bindchange="onPubCategory">
+        <view class="input-base {{!publishForm.category ? 'placeholder' : ''}}">
+          {{publishForm.category || '请选择分类(必选)'}}
+        </view>
+      </picker>
+    </view>
+    <view class="pub-cate-tip">请确保内容与分类匹配,否则会被举报删除</view>
+
+    <view class="form-row-col">
+      <text class="form-label">说明</text>
+      <textarea class="textarea-base" placeholder="介绍你分享的资料,适合什么人看,怎么用..." bindinput="onPubContent" value="{{publishForm.content}}" maxlength="2000"></textarea>
+    </view>
+
+    <view class="form-row-col">
+      <text class="form-label">图片(最多 5 张)</text>
+      <view class="image-grid">
+        <view wx:for="{{publishForm.images}}" wx:key="*this" class="img-item">
+          <image src="{{item}}" mode="aspectFill" />
+          <view class="img-del" catchtap="removeImage" data-idx="{{index}}">×</view>
+        </view>
+        <view wx:if="{{publishForm.images.length < 5}}" class="img-add" bindtap="chooseImages">
+          <text class="img-add-plus">＋</text>
+        </view>
+      </view>
+      <text class="form-tip">小程序不支持上传文件,请把笔记/资料截图为图片分享</text>
+    </view>
+
+    <view class="form-actions">
+      <view class="btn-secondary" bindtap="closePublishSheet">取消</view>
+      <view class="btn-primary" bindtap="submitResource">发布</view>
+    </view>
+  </view>
+
+</view>

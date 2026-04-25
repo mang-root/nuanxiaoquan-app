@@ -1,0 +1,73 @@
+<view class="match-page">
+
+<!-- 初始状态 -->
+<block wx:if="{{matchStatus === 'idle'}}">
+  <view class="match-hero">
+    <text class="match-hero-icon">🤝</text>
+    <text class="match-hero-title">找一位学习搭子</text>
+    <text class="match-hero-sub">临时配对,下线即散,无好友关系</text>
+  </view>
+
+  <view class="match-form">
+    <view class="match-form-row">
+      <text class="mf-label">学习类型</text>
+      <picker range="{{studyTypeOptions}}" bindchange="onStudyTypeChange" value="{{studyTypeIndex}}">
+        <view class="mf-picker">{{studyTypeOptions[studyTypeIndex]}} ▾</view>
+      </picker>
+    </view>
+    <view class="match-form-row">
+      <text class="mf-label">性别偏好</text>
+      <picker range="{{genderOptions}}" bindchange="onGenderChange" value="{{genderIndex}}">
+        <view class="mf-picker">{{genderOptions[genderIndex]}} ▾</view>
+      </picker>
+    </view>
+  </view>
+
+  <view class="match-start-btn" bindtap="startMatch">快速匹配</view>
+  <text class="match-note">配对成功后直接进入学习房间,不储存任何社交信息</text>
+</block>
+
+<!-- 匹配中 -->
+<block wx:if="{{matchStatus === 'searching'}}">
+  <view class="match-searching">
+    <view class="match-spinner">
+      <view class="spinner-ring"></view>
+      <text class="spinner-icon">🔍</text>
+    </view>
+    <text class="searching-text">正在匹配中{{dots}}</text>
+    <text class="searching-sub">剩余 {{matchCountdown}} 秒</text>
+    <view class="match-cancel-btn" bindtap="cancelMatch">取消匹配</view>
+  </view>
+</block>
+
+<!-- 匹配成功 -->
+<block wx:if="{{matchStatus === 'found'}}">
+  <view class="match-found">
+    <text class="found-emoji">🎉</text>
+    <text class="found-title">匹配成功!</text>
+
+    <view class="matched-user-card">
+      <view class="matched-avatar" style="background: {{matchedUser.avatarColor}};">
+        <text class="matched-letter">{{matchedUser.nickname.substring(0,1)}}</text>
+      </view>
+      <text class="matched-name">{{matchedUser.nickname}}</text>
+      <text class="matched-level">{{matchedUser.levelName}}</text>
+      <view class="matched-tag">{{matchedUser.studyType}}</view>
+    </view>
+
+    <view class="match-enter-btn" bindtap="enterRoom">进入学习房间 →</view>
+    <view class="match-cancel-btn" bindtap="retryMatch">重新匹配</view>
+  </view>
+</block>
+
+<!-- 超时 -->
+<block wx:if="{{matchStatus === 'timeout'}}">
+  <view class="match-timeout">
+    <text class="timeout-emoji">😔</text>
+    <text class="timeout-title">暂时没有合适的搭子</text>
+    <text class="timeout-sub">现在在线人数较少,可以稍后再试</text>
+    <view class="match-start-btn" bindtap="retryMatch">再试一次</view>
+  </view>
+</block>
+
+</view>

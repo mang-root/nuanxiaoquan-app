@@ -1,0 +1,37 @@
+.container{background:#fff;padding:30rpx;min-height:100vh;}
+.card{text-align:center;margin-bottom:40rpx;}
+.avatar{
+  width:160rpx;height:160rpx;border-radius:50%;
+  background:#ffd6e0;margin:0 auto 20rpx;
+}
+.name{font-size:36rpx;font-weight:bold;display:block;margin-bottom:10rpx;}
+.level{font-size:24rpx;color:#666;}
+
+.data{
+  display:flex;justify-content:space-around;
+  background:#f9f9f9;border-radius:20rpx;
+  padding:40rpx 0;margin-bottom:40rpx;
+}
+.data view{text-align:center;}
+.num{font-size:32rpx;font-weight:bold;display:block;}
+.label{font-size:24rpx;color:#666;}
+
+.tab{
+  display:flex;justify-content:space-around;
+  margin-bottom:30rpx;border-bottom:1rpx solid #eee;
+}
+.tab text{padding:20rpx;font-size:28rpx;}
+.tab text.on{color:#ff8da8;border-bottom:3rpx solid #ff8da8;}
+
+.item{
+  background:#f9f9f9;border-radius:16rpx;padding:30rpx;
+  margin-bottom:20rpx;position:relative;
+}
+.item .txt{font-size:26rpx;}
+.priv{
+  position:absolute;right:20rpx;top:20rpx;
+  background:#ff8da8;color:#fff;font-size:20rpx;
+  padding:4rpx 10rpx;border-radius:6rpx;
+}
+
+.setting{margin-top:40rpx;}
