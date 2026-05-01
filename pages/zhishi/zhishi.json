@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "知时",
-  "navigationBarBackgroundColor": "#ffffff",
-  "navigationBarTextStyle": "black",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "ai-fab": "/miniprogram/components/ai-fab/ai-fab"
-  }
-}

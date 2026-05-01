@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "自习室",
-  "usingComponents": {
-    "ai-fab": "/miniprogram/components/ai-fab/ai-fab"
-  }
-}

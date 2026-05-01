@@ -1,0 +1,79 @@
+name: warmcircle
+description: 暖小圈 - 全人群智能学习助手
+
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # ── UI 基础 ──────────────────────────────────
+  cupertino_icons: ^1.0.6      # iOS风格图标
+  flutter_screenutil: ^5.9.0   # 屏幕尺寸适配（必装，否则不同手机显示乱）
+  
+  # ── 状态管理 / 路由 ───────────────────────────
+  get: ^4.6.6                  # GetX三合一：状态管理+路由+依赖注入
+
+  # ── 网络请求 ──────────────────────────────────
+  dio: ^5.4.0                  # 比http库更强大的网络请求库
+
+  # ── 本地存储 ──────────────────────────────────
+  shared_preferences: ^2.2.3   # 轻量KV存储（存token、主题等小数据）
+
+  # ── 图表（数据可视化）──────────────────────────
+  fl_chart: ^0.67.0            # 学习统计折线图、记账饼图
+
+  # ── 日历 ──────────────────────────────────────
+  table_calendar: ^3.0.9       # 学习计划日历视图、生理期日历
+
+  # ── 图片处理 ──────────────────────────────────
+  cached_network_image: ^3.3.1 # 网络图片缓存（避免重复加载）
+  image_picker: ^1.0.7         # 从相册/相机选图（头像上传）
+
+  # ── 文件处理 ──────────────────────────────────
+  file_picker: ^6.1.1          # 选择PDF等文件（资源上传）
+
+  # ── 动画 ──────────────────────────────────────
+  lottie: ^3.0.0               # 播放Lottie动画（开屏动画、loading动画）
+  animations: ^2.0.11          # Flutter官方过渡动画
+
+  # ── 时间 ──────────────────────────────────────
+  intl: ^0.19.0                # 日期格式化（中文日期显示）
+
+  # ── 分享 ──────────────────────────────────────
+  share_plus: ^7.2.2           # 分享图片/文字到微信等
+
+  # ── 扫码/二维码 ──────────────────────────────
+  qr_flutter: ^4.1.0           # 生成二维码（学习计划分享）
+  mobile_scanner: ^3.5.6       # 扫描二维码
+
+  # ── 权限 ──────────────────────────────────────
+  permission_handler: ^11.3.0  # 动态申请相机、存储等权限
+
+  # ── 工具 ──────────────────────────────────────
+  url_launcher: ^6.2.6         # 打开外部链接（资源URL）
+  package_info_plus: ^5.0.1    # 获取APP版本号
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1        # 代码规范检查
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/           # 图片资源（logo等）
+    - assets/animations/       # Lottie动画文件
+    - assets/icons/            # 自定义图标
+
+  fonts:
+    # 如果你有PingFang字体文件，在这里配置
+    # 没有也没关系，Flutter会使用系统默认字体
+    # - family: PingFang
+    #   fonts:
+    #     - asset: assets/fonts/PingFang-Regular.ttf

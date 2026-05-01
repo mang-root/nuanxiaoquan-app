@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "小馆",
-  "usingComponents": {
-    "ai-fab": "/miniprogram/components/ai-fab/ai-fab"
-  }
-}

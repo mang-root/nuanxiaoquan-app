@@ -1,0 +1,32 @@
+# 暖小圈后端依赖包
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+sqlalchemy==2.0.25
+pymysql==1.1.0
+redis==5.0.1
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6
+pydantic==2.5.3
+pydantic-settings==2.1.0
+requests==2.31.0
+beautifulsoup4==4.12.3
+schedule==1.2.1
+pillow==10.2.0
+python-dotenv==1.0.0
+
+# 豆包AI SDK
+volcengine-python-sdk==1.0.98
+
+# 阿里云OSS
+oss2==2.18.4
+
+# 数据分析
+pandas==2.1.4
+numpy==1.26.3
+
+# 短信服务
+tencentcloud-sdk-python==3.0.1074
+
+# 任务队列
+celery==5.3.4
