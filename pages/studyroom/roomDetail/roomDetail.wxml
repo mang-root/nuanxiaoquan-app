@@ -1,25 +1,20 @@
 <!-- pages/studyroom/roomDetail/roomDetail.wxml -->
 <view class="room-page">
 
-<!-- 顶部:房间名(折行) + 时间 + 隐藏/显示按钮 -->
+<!-- 顶部:房间名 + 计时 + 退出 -->
 <view class="room-topbar">
   <view class="leave-btn" bindtap="leaveRoom">←</view>
   <view class="room-center">
     <text class="rt-name">{{room.name}}</text>
-    <text class="rt-time">时间 {{totalTimeStr}}</text>
+    <text class="rt-time">专注 {{totalTimeStr}}</text>
   </view>
-  <view class="chat-toggle-btn" bindtap="toggleChat">
-    {{showChat ? '隐藏' : '聊天'}}
-  </view>
+  <view style="width: 80rpx;"></view>
 </view>
 
 <!-- 在线同学区 -->
 <view class="members-area">
   <view class="members-grid">
-    <view wx:for="{{members}}" wx:key="id" class="member-seat"
-      bindtap="gotoMemberProfile"
-      data-nickname="{{item.nickname}}"
-      data-isme="{{item.isMe}}">
+    <view wx:for="{{members}}" wx:key="id" class="member-seat">
       <view class="seat-avatar" style="background: {{item.color}};">
         <text class="seat-letter">{{item.nickname ? item.nickname.substring(0,1) : '同'}}</text>
         <view wx:if="{{item.isOwner}}" class="owner-badge">房</view>
@@ -31,74 +26,61 @@
   </view>
 </view>
 
-<!-- 共享暖圈钟 -->
-<view class="tomato-bar">
-  <view class="tomato-left">
-    <text class="tomato-icon">⏱</text>
-    <view class="tomato-info">
-      <text class="tomato-label">共享暖圈钟</text>
-      <text class="tomato-time">{{tomatoTime}}</text>
+<!-- 专注计时核心区 -->
+<view class="focus-center">
+  <!-- 大圆形计时按钮 -->
+  <view class="focus-ring {{tomatoRunning ? 'running' : ''}}">
+    <view class="focus-ring-inner">
+      <text class="focus-time-big">{{tomatoTime}}</text>
+      <text class="focus-label-sm">{{tomatoRunning ? '专注中' : '暖圈钟'}}</text>
     </view>
   </view>
-  <view wx:if="{{!tomatoRunning}}" class="tomato-min-picker">
+
+  <!-- 时长选择(未开始时显示) -->
+  <view wx:if="{{!tomatoRunning}}" class="min-picker-row">
     <text wx:for="{{[15,25,45]}}" wx:key="*this"
-      class="tmp-btn {{tomatoMinutes === item ? 'active' : ''}}"
-      bindtap="changeTomatoMin" data-min="{{item}}">{{item}}</text>
+      class="min-btn {{tomatoMinutes === item ? 'active' : ''}}"
+      bindtap="changeTomatoMin" data-min="{{item}}">{{item}}min</text>
   </view>
-  <view wx:if="{{!tomatoRunning}}" class="tomato-start-btn" bindtap="startRoomTomato">开始</view>
-  <view wx:if="{{tomatoRunning}}" class="tomato-stop-btn" bindtap="stopRoomTomato">停止</view>
+
+  <!-- 操作按钮区 -->
+  <view class="focus-actions">
+    <view class="side-action" bindtap="saveRoom">
+      <text class="side-icon">⭐</text>
+      <text class="side-text">收藏</text>
+    </view>
+
+    <view wx:if="{{!tomatoRunning}}" class="focus-main-btn" bindtap="startRoomTomato">
+      <text class="focus-btn-text">开始专注</text>
+    </view>
+    <view wx:if="{{tomatoRunning}}" class="focus-main-btn focus-stop-btn" bindtap="stopRoomTomato">
+      <text class="focus-btn-text">结束专注</text>
+    </view>
+
+    <view class="side-action" bindtap="shareResult">
+      <text class="side-icon">📤</text>
+      <text class="side-text">分享</text>
+    </view>
+  </view>
 </view>
 
-<!-- 聊天区(可隐藏) -->
-<block wx:if="{{showChat}}">
-  <scroll-view class="chat-area" scroll-y="true"
-    scroll-into-view="{{messages.length > 0 ? 'msg-' + messages[messages.length-1].id : ''}}"
-    scroll-with-animation="true">
-    <view wx:for="{{messages}}" wx:key="id" id="msg-{{item.id}}"
-      class="msg-wrap {{item.isMe ? 'me' : ''}} {{item.isSystem ? 'system' : ''}}">
-      <block wx:if="{{item.isSystem}}">
-        <view class="system-msg">{{item.content}}</view>
-      </block>
-      <block wx:else>
-        <!-- 别人的消息:头像在左,气泡在右 -->
-        <view wx:if="{{!item.isMe}}" class="msg-item other">
-          <view class="msg-avatar-sm" style="background:{{item.color}};">
-            <text class="msg-letter-sm">{{item.nickname.substring(0,1)}}</text>
-          </view>
-          <view class="msg-right">
-            <text class="msg-name-sm">{{item.nickname}}</text>
-            <view class="msg-bubble other-bubble">{{item.content}}</view>
-          </view>
-        </view>
-
-        <!-- 自己的消息:气泡在左,头像在右 -->
-        <view wx:if="{{item.isMe}}" class="msg-item mine">
-          <view class="msg-bubble mine-bubble">{{item.content}}</view>
-          <view class="msg-avatar-sm" style="background:{{item.color}};">
-            <text class="msg-letter-sm">{{item.nickname.substring(0,1)}}</text>
-          </view>
-        </view>
-      </block>
-    </view>
-    <view style="height:40rpx;"></view>
-  </scroll-view>
-
-  <!-- 快捷短语 -->
-  <scroll-view class="quick-bar" scroll-x="true" enhanced="true" show-scrollbar="{{false}}">
-    <view class="quick-btn" bindtap="checkIn">✓ 打卡</view>
-    <view class="quick-btn" bindtap="sendQuick" data-text="加油!">💪 加油</view>
-    <view class="quick-btn" bindtap="sendQuick" data-text="休息一下">☕ 休息</view>
-    <view class="quick-btn" bindtap="sendQuick" data-text="我来了">👋 来了</view>
-    <view class="quick-btn" bindtap="sendQuick" data-text="我走啦">🌙 走啦</view>
-    <view class="quick-btn" bindtap="sendQuick" data-text="一起冲!">🚀 冲冲冲</view>
-  </scroll-view>
-
-  <!-- 输入框(showChat 时才显示) -->
-  <view class="input-bar">
-    <input class="msg-input" placeholder="说点什么..."
-      value="{{inputMsg}}" bindinput="onInputMsg" bindconfirm="sendMsg" />
-    <view class="send-btn" bindtap="sendMsg">发送</view>
+<!-- 底部数据卡片 -->
+<view class="data-cards">
+  <view class="data-card">
+    <text class="data-icon">👥</text>
+    <text class="data-num">{{members.length}}</text>
+    <text class="data-desc">在线人数</text>
   </view>
-</block>
+  <view class="data-card">
+    <text class="data-icon">📚</text>
+    <text class="data-num">{{todayRoomMin}}</text>
+    <text class="data-desc">今日专注(分)</text>
+  </view>
+  <view class="data-card">
+    <text class="data-icon">⭐</text>
+    <text class="data-num">{{userInfo.heartValue || 0}}</text>
+    <text class="data-desc">暖心值</text>
+  </view>
+</view>
 
 </view>

@@ -82,6 +82,13 @@ Page({
 
   gotoDetail(e) {
     const id = e.currentTarget.dataset.id;
+    // 记录点击量，用于热门算法
+    const all = storage.getResources();
+    const r = all.find(x => x.id == id);
+    if (r) {
+      r.clickCount = (r.clickCount || 0) + 1;
+      wx.setStorageSync('resources', all);
+    }
     wx.navigateTo({
       url: `/miniprogram/pages/shop/goodsDetail/goodsDetail?id=${id}`
     });
@@ -166,7 +173,7 @@ Page({
     if (!title.trim()) {
       wx.showToast({ title: "请填写标题", icon: "none" });
       return;
-    }
+    },
     if (!category) {
       wx.showToast({ title: "请选择分类", icon: "none" });
       return;

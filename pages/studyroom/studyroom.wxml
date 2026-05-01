@@ -22,17 +22,12 @@
   </view>
 </view>
 
-<!-- 快速入口（3个按钮） -->
+<!-- 快速入口（2个按钮，去掉匹配） -->
 <view class="quick-entries">
   <view class="qe-btn qe-solo" bindtap="openTomato">
     <text class="qe-icon">⏱</text>
     <text class="qe-text">暖圈钟</text>
     <text class="qe-desc">专注学习</text>
-  </view>
-  <view class="qe-btn qe-match" bindtap="gotoMatch">
-    <text class="qe-icon">🤝</text>
-    <text class="qe-text">找搭子</text>
-    <text class="qe-desc">快速匹配</text>
   </view>
   <view class="qe-btn qe-create" bindtap="openCreateModal">
     <text class="qe-icon">🏠</text>
@@ -89,12 +84,6 @@
   <text class="nearby-arrow">→</text>
 </view>
 
-<!-- 地图合规说明 -->
-<view class="map-compliance" bindtap="openMapInfo">
-  <text class="compliance-text">地图服务:国家地理信息公共服务平台(天地图) · 标准地图服务</text>
-  <text class="compliance-sub">tianditu.gov.cn · bzdt.ch.mnr.gov.cn</text>
-</view>
-
 <!-- 创建房间弹窗 -->
 <view wx:if="{{createModalShow}}" class="mask" bindtap="closeCreateModal"></view>
 <view wx:if="{{createModalShow}}" class="form-sheet" catchtap="">
@@ -115,9 +104,8 @@
   </view>
   <view class="form-row">
     <text class="form-label">房间密码</text>
-    <input class="input-base" password="{{false}}" placeholder="不填=公开房间" bindinput="onRoomPassword" value="{{newRoom.password}}" maxlength="8" />
+    <input class="input-base" placeholder="不填=公开房间" bindinput="onRoomPassword" value="{{newRoom.password}}" maxlength="8" />
   </view>
-  <view class="form-tip">人数上限 1-20,密码可选,设置后进房需要输入</view>
   <view class="form-actions">
     <view class="btn-secondary" bindtap="closeCreateModal">取消</view>
     <view class="btn-primary" bindtap="createRoom">创建</view>
@@ -157,7 +145,6 @@
         >{{item}}分</view>
         <view class="dur-btn dur-custom" bindtap="openCustomTime">自定义</view>
       </view>
-      <text wx:if="{{[15,25,45,60,90].indexOf(countdownMinutes) === -1}}" class="custom-tip">当前:{{countdownMinutes}} 分钟</text>
     </view>
 
     <view class="tomato-action">
@@ -170,23 +157,25 @@
     </view>
   </view>
 
-  <!-- 自定义时长输入弹层 -->
   <view wx:if="{{customTimeShow}}" class="custom-mask" bindtap="closeCustomTime"></view>
   <view wx:if="{{customTimeShow}}" class="custom-sheet" catchtap="">
-      <text class="custom-title">自定义暖圈钟时长</text>
-      <input
-        class="custom-input"
-        type="number"
-        placeholder="输入 1-180 分钟"
-        value="{{customMinInput}}"
-        bindinput="onCustomMinInput"
-        focus="{{customTimeShow}}"
-      />
-      <view class="custom-actions">
-        <view class="btn-secondary" bindtap="closeCustomTime">取消</view>
-        <view class="btn-primary" bindtap="confirmCustomTime">确定</view>
-      </view>
+    <text class="custom-title">自定义暖圈钟时长</text>
+    <input
+      class="custom-input"
+      type="number"
+      placeholder="输入 1-180 分钟"
+      value="{{customMinInput}}"
+      bindinput="onCustomMinInput"
+      focus="{{customTimeShow}}"
+    />
+    <view class="custom-actions">
+      <view class="btn-secondary" bindtap="closeCustomTime">取消</view>
+      <view class="btn-primary" bindtap="confirmCustomTime">确定</view>
     </view>
+  </view>
 </view>
 
+
+<!-- AI 悬浮按钮（公共组件） -->
+<ai-fab></ai-fab>
 </view>

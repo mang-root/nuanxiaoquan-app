@@ -1,4 +1,6 @@
 {
-  "usingComponents": {},
-  "navigationBarTitleText": "首页"
+  "navigationBarTitleText": "暖小圈",
+  "usingComponents": {
+    "ai-fab": "/miniprogram/components/ai-fab/ai-fab"
+  }
 }

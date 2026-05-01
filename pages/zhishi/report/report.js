@@ -211,7 +211,7 @@ Page({
         const absAmount = Math.abs(dayNet);
         if (absAmount > maxDay.amount) {
           maxDay = { date, amount: absAmount };
-        }
+        },
         if (absAmount > 0 && absAmount < minDay.amount) {
           minDay = { date, amount: absAmount };
         }

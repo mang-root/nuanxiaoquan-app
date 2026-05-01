@@ -32,12 +32,8 @@ Page({
     tomatoStartTimestamp: 0
   },
 
-  // ========== 跳转到匹配搭子页面 ==========
-  gotoMatch() {
-    wx.navigateTo({
-      url: '/miniprogram/pages/studyroom/match/match'
-    });
-  },
+ 
+
 
   onLoad() {
     this.initRooms();
@@ -203,7 +199,7 @@ Page({
     if (this.data.tomatoRunning) return;
     const idx = Number(e.currentTarget.dataset.idx);
     this.setData({
-      tomatoModeIndex: idx,
+      tomatoMode: idx,
       tomatoTime: idx === 0
         ? `${String(this.data.countdownMinutes).padStart(2, '0')}:00`
         : "00:00"

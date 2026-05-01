@@ -7,21 +7,21 @@ Page({
   data: {
     userInfo: {},
     levelInfo: {},
+    currentDeco: "",
     stats: {
       totalMinutes: 0,
       streakDays: 0,
-      postCount: 0,
-      collectedCount: 0
+      noteCount: 0
     },
-    // Tab:post 帖子 / resource 资源 / collect 收藏 / private 私密
-    activeTab: "post",
-    myPosts: [],
-    myResources: [],
-    myCollects: [],
-    myPrivate: []
+    myPrivate: [],
+    addNoteShow: false,
+    noteForm: {
+      title: '',
+      content: '',
+      images: []
+    }
   },
 
-  // ========== 微信头像授权 ==========
   onChooseAvatar(e) {
     const avatarUrl = e.detail.avatarUrl;
     const user = storage.getUserInfo();
@@ -32,11 +32,13 @@ Page({
   },
 
   onShow() {
-    // 1. 获取用户信息
-    const user = storage.getUserInfo();
-    const myName = user.nickname || "同学";
+    const u = storage.getUserInfo();
+    if (!u.nickname || u.nickname === '同学' || u.nickname === '暖小圈用户') {
+      u.nickname = 'nxq' + Math.floor(100000 + Math.random() * 900000);
+      storage.setUserInfo(u);
+    }
 
-    // 2. 统计学习时长和连续打卡
+    const user = storage.getUserInfo();
     const tasksMap = storage.getAllTasksMap();
     let totalMin = 0;
     Object.keys(tasksMap).forEach(d => {
@@ -59,61 +61,60 @@ Page({
       }
     }
 
-    // 3. 计算等级信息
     const levelInfo = levelConfig.getLevelByHeart(user.heartValue);
+    const myPrivate = (wx.getStorageSync('privateNotes') || []).map(n => ({
+      ...n,
+      dateStr: n.createdAt ? new Date(n.createdAt).toLocaleDateString('zh-CN') : ''
+    })).reverse();
 
-    // 4. 获取所有帖子和资源
-    const allPosts = storage.getPosts();
-    const allResources = storage.getResources();
-
-    // 5. 过滤数据
-    const myPosts = allPosts.filter(p => p.authorNickname === myName && !p.privateOnly); // 我的公开帖子
-    const myPrivate = allPosts.filter(p => p.authorNickname === myName && p.privateOnly); // 我的私密笔记
-    const myResources = allResources.filter(r => r.authorNickname === myName); // 我的资源
-    
-    // 我的收藏（帖子+资源）
-    const collectedPosts = allPosts.filter(p => p.collected && !p.privateOnly);
-    const collectedResources = allResources.filter(r => r.collected);
-    const myCollects = [...collectedPosts, ...collectedResources];
-
-    // 6. 统一 setData
     this.setData({
       userInfo: user,
-      levelInfo: levelInfo,
+      levelInfo,
       stats: {
         totalMinutes: totalMin,
         streakDays: streak,
-        postCount: myPosts.length,
-        collectedCount: myCollects.length
+        noteCount: myPrivate.length
       },
-      activeTab: "post",
-      myPosts: myPosts,
-      myResources: myResources,
-      myCollects: myCollects,
-      myPrivate: myPrivate
-    });
-  },
-
-  switchTab(e) {
-    this.setData({ activeTab: e.currentTarget.dataset.tab });
-  },
-
-  // 点头像 → 个人主页
-  gotoProfile() {
-    wx.navigateTo({
-      url: '/miniprogram/pages/userProfile/userProfile?self=1'
+      myPrivate
     });
   },
 
   gotoEditNickname() {
-    wx.navigateTo({ url: '/miniprogram/pages/mine/setting/setting?focus=nickname' });
+    const that = this;
+    wx.showModal({
+      title: '自定义昵称',
+      editable: true,
+      placeholderText: '请输入昵称',
+      success(r) {
+        if (r.confirm && r.content) {
+          const u = storage.getUserInfo();
+          u.nickname = r.content.trim();
+          storage.setUserInfo(u);
+          that.setData({ 'userInfo.nickname': u.nickname });
+          wx.showToast({ title: '已更新', icon: 'success' });
+        }
+      }
+    });
   },
 
   gotoEditSignature() {
-    wx.navigateTo({ url: '/miniprogram/pages/mine/setting/setting?focus=signature' });
+    const that = this;
+    wx.showModal({
+      title: '编辑签名',
+      editable: true,
+      placeholderText: '说点什么...',
+      success(r) {
+        if (r.confirm) {
+          const u = storage.getUserInfo();
+          u.signature = r.content || '';
+          storage.setUserInfo(u);
+          that.setData({ 'userInfo.signature': u.signature });
+          wx.showToast({ title: '已更新', icon: 'success' });
+        }
+      }
+    });
   },
 
-  // 点等级卡片 → 等级详情
   gotoLevel() {
     wx.navigateTo({ url: '/miniprogram/pages/mine/levelDetail/levelDetail' });
   },
@@ -122,21 +123,93 @@ Page({
     wx.navigateTo({ url: '/miniprogram/pages/mine/setting/setting' });
   },
 
-  gotoMessage() {
-    wx.navigateTo({ url: '/miniprogram/pages/mine/messageCenter/messageCenter' });
-  },
-
-  gotoPostDetail(e) {
-    const id = e.currentTarget.dataset.id;
-    wx.navigateTo({
-      url: `/miniprogram/pages/postDetail/postDetail?id=${id}`
+  // 私密笔记操作
+  openAddNote() {
+    this.setData({
+      addNoteShow: true,
+      noteForm: { title: '', content: '', images: [] }
     });
   },
 
-  gotoResourceDetail(e) {
-    const id = e.currentTarget.dataset.id;
-    wx.navigateTo({
-      url: `/miniprogram/pages/shop/goodsDetail/goodsDetail?id=${id}`
+  closeAddNote() {
+    this.setData({ addNoteShow: false });
+  },
+
+  onNoteTitle(e) {
+    this.setData({ 'noteForm.title': e.detail.value });
+  },
+
+  onNoteContent(e) {
+    this.setData({ 'noteForm.content': e.detail.value });
+  },
+
+  chooseNoteImages() {
+    const current = this.data.noteForm.images;
+    const remain = 9 - current.length;
+    wx.chooseMedia({
+      count: remain,
+      mediaType: ['image'],
+      sourceType: ['album', 'camera'],
+      sizeType: ['compressed'],
+      success: (res) => {
+        const paths = (res.tempFiles || []).map(f => f.tempFilePath);
+        this.setData({
+          'noteForm.images': [...current, ...paths].slice(0, 9)
+        });
+      }
     });
-  }
+  },
+
+  removeNoteImage(e) {
+    const idx = e.currentTarget.dataset.idx;
+    const imgs = this.data.noteForm.images.slice();
+    imgs.splice(idx, 1);
+    this.setData({ 'noteForm.images': imgs });
+  },
+
+  submitNote() {
+    const f = this.data.noteForm;
+    if (!f.content.trim() && !f.title.trim()) {
+      wx.showToast({ title: '请输入内容', icon: 'none' });
+      return;
+    }
+    const notes = wx.getStorageSync('privateNotes') || [];
+    notes.push({
+      id: Date.now(),
+      title: f.title.trim(),
+      content: f.content.trim(),
+      images: f.images.slice(),
+      createdAt: Date.now()
+    });
+    wx.setStorageSync('privateNotes', notes);
+    this.setData({ addNoteShow: false });
+    wx.showToast({ title: '已保存', icon: 'success' });
+    this.onShow();
+  },
+
+  deleteNote(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.showModal({
+      title: '删除笔记',
+      content: '确认删除这条私密笔记？',
+      success: (res) => {
+        if (res.confirm) {
+          let notes = wx.getStorageSync('privateNotes') || [];
+          notes = notes.filter(n => n.id !== id);
+          wx.setStorageSync('privateNotes', notes);
+          wx.showToast({ title: '已删除', icon: 'success' });
+          this.onShow();
+        }
+      }
+    });
+  },
+
+  gotoNoteDetail(e) {
+    // 点击笔记可查看详情（这里直接展开，不做跳转）
+    wx.showToast({ title: '长按可删除', icon: 'none' });
+  },
+
+  gotoCheckinHistory() {
+    wx.navigateTo({ url: '/miniprogram/pages/checkin/checkin' });
+  },
 });

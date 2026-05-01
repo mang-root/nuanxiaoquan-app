@@ -1,3 +1,9 @@
+<!-- 小馆Banner -->
+<view class="shop-banner">
+  <text class="shop-banner-title">📚 小馆</text>
+  <text class="shop-banner-sub">精选笔记、学习资料、学习心得</text>
+</view>
+
 <!-- pages/shop/shop.wxml -->
 <view class="shop-page">
 
@@ -169,4 +175,7 @@
     </view>
   </view>
 
+
+<!-- AI 悬浮按钮（公共组件） -->
+<ai-fab></ai-fab>
 </view>

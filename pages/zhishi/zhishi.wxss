@@ -1,12 +1,11 @@
 /* pages/zhishi/zhishi.wxss */
-
 .zhishi-page {
   background: #ffffff;
   min-height: 100vh;
   padding-bottom: 48rpx;
 }
 
-/* ============ 顶栏 ============ */
+/* ============ 顶栏（改回下拉框样式）============ */
 .top-bar {
   display: flex;
   align-items: center;
@@ -52,22 +51,24 @@
   font-size: 26rpx;
   display: flex;
   align-items: center;
+  min-width: 200rpx;
+  justify-content: center;
 }
 .mode-btn .arrow {
   margin-left: 6rpx;
   font-size: 22rpx;
 }
 .mode-btn-plan {
-  background: #e8f1ff;
-  color: #6b9bd8;
+  background: #E8F1FF;
+  color: #6B9BD8;
 }
 .mode-btn-account {
-  background: #e8f7e9;
-  color: #4caf50;
+  background: #E8F7E9;
+  color: #4CAF50;
 }
 .mode-btn-period {
-  background: #ffe8f0;
-  color: #ff8da8;
+  background: #FFE8F0;
+  color: #FF8DA8;
 }
 
 .mode-bar {
@@ -79,12 +80,12 @@
 .mode-bar-account { background: #7dce82; }
 .mode-bar-period { background: #ff8ba7; }
 
-/* ============ 模式块 ============ */
+/* ============ 模式块（完全保留你现在的样式）============ */
 .mode-block {
   padding: 0 24rpx;
 }
 
-/* ============ 记账 ============ */
+/* ============ 记账（完全保留）============ */
 .account-card {
   background: #f7fbf7;
   border-radius: 16rpx;
@@ -205,7 +206,7 @@
   margin-top: 6rpx;
 }
 
-/* ============ 生理期 ============ */
+/* ============ 生理期（完全保留）============ */
 .period-tip-empty {
   padding: 80rpx 32rpx;
   background: #fff5f7;
@@ -293,7 +294,7 @@
   margin-top: 24rpx;
 }
 
-/* ============ 遮罩 & 弹层 ============ */
+/* ============ 遮罩 & 弹层（完全保留）============ */
 .mask {
   position: fixed;
   top: 0;
@@ -308,7 +309,7 @@
 
 .mode-selector {
   position: fixed;
-  top: 110rpx;
+  top: 140rpx;
   right: 24rpx;
   background: #ffffff;
   border-radius: 16rpx;

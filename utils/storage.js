@@ -11,7 +11,7 @@ function getUserInfo() {
   const init = {
     avatar: "",
     avatarColor: "#FFD4DF",
-    nickname: "同学",
+    nickname: "用户" + Math.floor(1000 + Math.random() * 9000),
     heartValue: 0,
     level: 1,
     levelName: "新序",

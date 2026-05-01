@@ -89,6 +89,14 @@ Page({
   },
 
   onShow() {
+
+    // 检查是否有AI导入的计划
+    const pendingPlan = wx.getStorageSync('pendingImportPlan');
+    if (pendingPlan) {
+      wx.removeStorageSync('pendingImportPlan');
+      this.importAIPlan(pendingPlan);
+    }
+
     const userInfo = storage.getUserInfo();
     this.setData({ showPeriodMode: userInfo.showPeriodMode === true });
 
@@ -153,20 +161,23 @@ Page({
     return `${d.getMonth() + 1}月${d.getDate()}日 · ${weekDays[d.getDay()]}`;
   },
 
-  // =============== 模式切换 ===============
+  // =============== 下拉框切换逻辑（新增）===============
   toggleModeSelector() {
     this.setData({ modeSelectorShow: !this.data.modeSelectorShow });
   },
 
   chooseMode(e) {
     const mode = e.currentTarget.dataset.mode;
+    if (mode === this.data.currentMode) {
+      this.setData({ modeSelectorShow: false });
+      return;
+    },
     if (mode === 'period' && !this.data.showPeriodMode) {
       wx.showModal({
         title: '生理期模式未开启',
         content: '请在「我的 → 设置」中开启后再使用',
         showCancel: false
       });
-      this.setData({ modeSelectorShow: false });
       return;
     }
     this.setData({
@@ -445,7 +456,7 @@ Page({
     } else {
       const tasks = storage.getAllTasksMap()[date] || [];
       items = tasks.map((t, i) => ({ id: Date.now() + i, text: t.text || t.title || '', done: false }));
-    }
+    },
     if (items.length === 0) { wx.showToast({ title: '那天没内容', icon: 'none' }); return; }
 
     // 追加到第一个板块，如没有则新建
@@ -662,9 +673,9 @@ Page({
     if (cycles.length >= 2) {
       const gaps = [];
       for (let i = 1; i < cycles.length; i++) {
-        const g = Math.round((new Date(cycles[i].start) - new Date(cycles[i - 1].start)) / 86400000);
-        if (g > 10 && g < 60) gaps.push(g); // 合理范围
-      }
+        const g = Math.round((new Date(cycles[i].start) - new Date(cycles[i-1].start)) / 86400000);
+        if (g > 10 && g < 60) gaps.push(g);
+      },
       if (gaps.length > 0) {
         const recent = gaps.slice(-3);
         avgCycle = Math.round(recent.reduce((s, v) => s + v, 0) / recent.length);
@@ -817,5 +828,55 @@ Page({
     }
     this.loadPeriod();
     wx.showToast({ title: '已保存', icon: 'success' });
-  }
+  },
+
+  importAIPlan(text) {
+    // 解析AI生成的学习计划文本，提取板块和任务
+    const lines = text.split('\n').filter(l => l.trim());
+    const boards = [];
+    let currentBoard = null;
+    const colors = ['#6b9bd8','#ff8da8','#7dce82','#f5a623','#9b59b6'];
+
+    lines.forEach(line => {
+      const trimmed = line.trim();
+      // 识别板块标题：第X天/大板块/主题行
+      if (/^(第\d+天|Day\s*\d+|\d+\.|[一二三四五六七八九十]+、|\*\*[^*]+\*\*|#+\s)/.test(trimmed) && !currentBoard) {
+        const title = trimmed.replace(/^[\d#*一二三四五六七八九十、.\s]+/, '').replace(/\*\*/g, '').trim() || trimmed;
+        currentBoard = { id: 'ai_' + Date.now() + '_' + boards.length, title: title.substring(0, 15), color: colors[boards.length % colors.length], items: [], doneCount: 0 };
+        boards.push(currentBoard);
+      } else if (currentBoard && /^[-•·*✦\d]/.test(trimmed) && trimmed.length > 2) {
+        // 识别任务项
+        const taskText = trimmed.replace(/^[-•·*✦\d.、]\s*/, '').trim();
+        if (taskText.length > 1 && taskText.length < 50) {
+          currentBoard.items.push({ id: 'task_' + Date.now() + '_' + Math.random(), text: taskText, done: false });
+        }
+      } else if (trimmed.length > 4 && !currentBoard) {
+        // 兜底：作为默认板块
+        if (boards.length === 0) {
+          currentBoard = { id: 'ai_default_' + Date.now(), title: 'AI导入计划', color: '#6b9bd8', items: [], doneCount: 0 };
+          boards.push(currentBoard);
+        }
+      }
+    });
+
+    if (boards.length === 0) {
+      // 没有识别到结构，创建一个总板块
+      boards.push({
+        id: 'ai_single_' + Date.now(),
+        title: 'AI学习计划',
+        color: '#6b9bd8',
+        items: [{ id: 'task_' + Date.now(), text: 'AI计划已导入，请手动整理', done: false }],
+        doneCount: 0
+      });
+    }
+
+    // 合并到当前计划
+    const existing = this.data.planBoards || [];
+    const merged = [...existing, ...boards];
+    this.setData({ planBoards: merged, currentMode: 'plan' });
+    this._savePlanBoards(this.data.today, merged);
+    this._recalcProgress(merged);
+    wx.showToast({ title: `已导入 ${boards.length} 个板块`, icon: 'none' });
+  },
+
 });

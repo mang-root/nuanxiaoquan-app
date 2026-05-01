@@ -1,6 +1,6 @@
 {
   "pages": [
-    "miniprogram/pages/index/index",
+    "miniprogram/pages/home/home",
     "miniprogram/pages/studyroom/studyroom",
     "miniprogram/pages/zhishi/zhishi",
     "miniprogram/pages/shop/shop",
@@ -14,7 +14,9 @@
     "miniprogram/pages/mine/messageCenter/messageCenter",
     "miniprogram/pages/userProfile/userProfile",
     "miniprogram/pages/period/period",
-    "miniprogram/pages/studyroom/match/match"
+    "miniprogram/pages/mine/privateNote/privateNote",
+    "miniprogram/pages/ai/ai",
+    "miniprogram/pages/checkin/checkin"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -30,7 +32,7 @@
     "borderStyle": "white",
     "list": [
       {
-        "pagePath": "miniprogram/pages/index/index",
+        "pagePath": "miniprogram/pages/home/home",
         "text": "首页",
         "iconPath": "miniprogram/images/tab/home.png",
         "selectedIconPath": "miniprogram/images/tab/home-active.png"

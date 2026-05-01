@@ -1,99 +1,112 @@
 // utils/levelConfig.js
 // 等级 / 暖心值 / 等级奖励 统一配置
-// 修改等级规则只改这里
 
-// 升级曲线(暖心值累计)
 const LEVEL_THRESHOLDS = [
-  { level: 1,  name: "新序",   required: 0,     color: "#B0B0B0" },
-  { level: 2,  name: "待苞",   required: 30,    color: "#FFC1CE" },
-  { level: 3,  name: "初绽",   required: 100,   color: "#FF8DA8" },
-  { level: 4,  name: "栖暖",   required: 250,   color: "#FFB380" },
-  { level: 5,  name: "温行",   required: 500,   color: "#FFCE6B" },
-  { level: 6,  name: "晴和",   required: 900,   color: "#7DCE82" },
-  { level: 7,  name: "风叙",   required: 1500,  color: "#6BD8C9" },
-  { level: 8,  name: "向煦",   required: 2500,  color: "#6B9BD8" },
-  { level: 9,  name: "揽星",   required: 4000,  color: "#9B7DCE" },
-  { level: 10, name: "暖小圈", required: 6500,  color: "#FF8DA8" }
+  { level: 1,  name: "新序",   required: 0,     color: "#B0B0B0", emoji: "🌱" },
+  { level: 2,  name: "待苞",   required: 30,    color: "#FFC1CE", emoji: "🌷" },
+  { level: 3,  name: "初绽",   required: 100,   color: "#FF8DA8", emoji: "🌸" },
+  { level: 4,  name: "栖暖",   required: 250,   color: "#FFB380", emoji: "🔥" },
+  { level: 5,  name: "温行",   required: 500,   color: "#FFCE6B", emoji: "⭐" },
+  { level: 6,  name: "晴和",   required: 900,   color: "#7DCE82", emoji: "🌤" },
+  { level: 7,  name: "风叙",   required: 1500,  color: "#6BD8C9", emoji: "🍃" },
+  { level: 8,  name: "向煦",   required: 2500,  color: "#6B9BD8", emoji: "💎" },
+  { level: 9,  name: "揽星",   required: 4000,  color: "#9B7DCE", emoji: "🌙" },
+  { level: 10, name: "暖小圈", required: 6500,  color: "#FF8DA8", emoji: "👑" }
 ];
 
-// 暖心值获取规则
+// 暖心值获取规则（去掉社交相关，保留个人行为）
 const HEART_RULES = {
   dailyLogin:        { value: 2,  limit: 2,   desc: "每日首次登录" },
+  dailyCheckin:      { value: 2,  limit: 2,   desc: "每日情绪打卡" },
   completeTask:      { value: 5,  limit: 30,  desc: "完成学习任务" },
   tomatoComplete:    { value: 5,  limit: 20,  desc: "自习室学满30分钟" },
-  publishPost:       { value: 10, limit: 30,  desc: "发帖(审核通过)" },
-  postLiked:         { value: 1,  limit: 20,  desc: "帖子被点赞" },
-  postCollected:     { value: 2,  limit: 30,  desc: "帖子被收藏" },
-  publishShare:      { value: 15, limit: 30,  desc: "分享资源(审核通过)" },
-  shareCollected:    { value: 1,  limit: 20,  desc: "资源被收藏" },
-  shareDownloaded:   { value: 2,  limit: 30,  desc: "资源被获取" },
-  addAccountItem:    { value: 1,  limit: 5,   desc: "记账一笔" },
+  readResource:      { value: 1,  limit: 10,  desc: "浏览学习资源" },
+  collectResource:   { value: 2,  limit: 10,  desc: "收藏学习资源" },
+  writeNote:         { value: 5,  limit: 15,  desc: "写私密笔记" },
   addPeriodRecord:   { value: 3,  limit: 3,   desc: "生理期记录" },
   weeklyStreak:      { value: 20, limit: 20,  desc: "连续打卡一周" },
-  inviteNewUser:     { value: 30, limit: 999, desc: "邀请新用户" }
+  monthlyStreak:     { value: 50, limit: 50,  desc: "连续打卡一个月" }
 };
 
-// 等级奖励
+// 等级奖励（纯用emoji+CSS实现，不需要找图片）
 const LEVEL_REWARDS = [
   {
     level: 1, name: "新序",
-    rewards: ["默认头像框「初见」"]
+    rewards: [
+      { text: "默认头像装饰「新芽」🌱", type: "avatarDeco", value: "🌱" },
+    ]
   },
   {
     level: 2, name: "待苞",
     rewards: [
-      "发帖权限解锁",
-      "小馆分享权限解锁",
-      "创建多人房间权限",
-      "自定义自习室房间人数(1-20)"
+      { text: "头像装饰「花苞」🌷", type: "avatarDeco", value: "🌷" },
+      { text: "解锁小馆资源收藏功能", type: "feature" },
     ]
   },
   {
     level: 3, name: "初绽",
-    rewards: ["发帖气泡「小花苞」", "评论颜色可选"]
+    rewards: [
+      { text: "头像装饰「樱花」🌸", type: "avatarDeco", value: "🌸" },
+      { text: "个人签名自定义颜色", type: "feature" },
+      { text: "知时日历主题「暖粉」", type: "theme", value: "pink" },
+    ]
   },
   {
     level: 4, name: "栖暖",
-    rewards: ["自习室入场动效", "暖圈钟可自定义时长(5-60分钟)"]
+    rewards: [
+      { text: "头像装饰「暖焰」🔥", type: "avatarDeco", value: "🔥" },
+      { text: "自习室自定义时长(5-90分钟)", type: "feature" },
+    ]
   },
   {
     level: 5, name: "温行",
     rewards: [
-      "自定义背景图上传",
-      "背景图透明度调节",
-      "白噪音自定义组合"
+      { text: "头像装饰「星辰」⭐", type: "avatarDeco", value: "⭐" },
+      { text: "知时日历主题「暖橙」", type: "theme", value: "orange" },
+      { text: "学习数据周报可导出图片", type: "feature" },
     ]
   },
   {
     level: 6, name: "晴和",
-    rewards: ["头像框「晴日」", "知时日历皮肤2款"]
+    rewards: [
+      { text: "头像装饰「晴光」🌤", type: "avatarDeco", value: "🌤" },
+      { text: "知时日历主题「清绿」", type: "theme", value: "green" },
+    ]
   },
   {
     level: 7, name: "风叙",
-    rewards: ["专属昵称框「风叙者」", "我的主页自定义简介", "评论区高亮色块"]
+    rewards: [
+      { text: "头像装饰「风叶」🍃", type: "avatarDeco", value: "🍃" },
+      { text: "昵称渐变色效果", type: "feature" },
+      { text: "个人页自定义简介", type: "feature" },
+    ]
   },
   {
     level: 8, name: "向煦",
-    rewards: ["头像框「煦光」", "发帖可加个人logo水印", "知时日历皮肤新增2款"]
+    rewards: [
+      { text: "头像装饰「钻石」💎", type: "avatarDeco", value: "💎" },
+      { text: "知时日历主题「深蓝」", type: "theme", value: "blue" },
+      { text: "学习报告可分享为图片", type: "feature" },
+    ]
   },
   {
     level: 9, name: "揽星",
-    rewards: ["限定头像框「星河」(渐变动效)", "学习成就勋章墙", "知时报告可导出为图片"]
+    rewards: [
+      { text: "头像装饰「星月」🌙（带光效）", type: "avatarDeco", value: "🌙" },
+      { text: "学习成就勋章墙解锁", type: "feature" },
+    ]
   },
   {
     level: 10, name: "暖小圈",
     rewards: [
-      "满级称号图标",
-      "全皮肤解锁",
-      "自定义昵称颜色",
-      "专属勋章「暖小圈创始成员」"
+      { text: "头像装饰「王冠」👑（带闪烁）", type: "avatarDeco", value: "👑" },
+      { text: "全主题皮肤解锁", type: "feature" },
+      { text: "昵称自定义颜色", type: "feature" },
+      { text: "专属称号「暖小圈创始者」", type: "title", value: "暖小圈创始者" },
     ]
   }
 ];
 
-/**
- * 根据暖心值算出当前等级
- */
 function getLevelByHeart(heartValue) {
   let currentLevel = LEVEL_THRESHOLDS[0];
   for (const lv of LEVEL_THRESHOLDS) {
@@ -106,15 +119,12 @@ function getLevelByHeart(heartValue) {
   return currentLevel;
 }
 
-/**
- * 算出下一级还需要多少暖心值
- */
 function getNextLevelInfo(heartValue) {
   const current = getLevelByHeart(heartValue);
   if (current.level === 10) {
     return { isMax: true, current, next: null, remaining: 0, percent: 100 };
   }
-  const next = LEVEL_THRESHOLDS[current.level]; // level 数组索引就是下一级
+  const next = LEVEL_THRESHOLDS[current.level];
   const remaining = next.required - heartValue;
   const total = next.required - current.required;
   const earned = heartValue - current.required;
@@ -122,10 +132,27 @@ function getNextLevelInfo(heartValue) {
   return { isMax: false, current, next, remaining, percent };
 }
 
+// 获取用户已解锁的头像装饰
+function getUnlockedDecos(heartValue) {
+  const level = getLevelByHeart(heartValue).level;
+  const decos = [];
+  LEVEL_REWARDS.forEach(lr => {
+    if (lr.level <= level) {
+      lr.rewards.forEach(r => {
+        if (r.type === 'avatarDeco') {
+          decos.push({ level: lr.level, name: lr.name, emoji: r.value, text: r.text });
+        }
+      });
+    }
+  });
+  return decos;
+}
+
 module.exports = {
   LEVEL_THRESHOLDS,
   HEART_RULES,
   LEVEL_REWARDS,
   getLevelByHeart,
-  getNextLevelInfo
+  getNextLevelInfo,
+  getUnlockedDecos
 };

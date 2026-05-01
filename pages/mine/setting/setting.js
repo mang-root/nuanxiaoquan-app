@@ -182,6 +182,7 @@ Page({
   },
 
   // 只清临时缓存(不清用户数据)
+
   clearTempCache() {
     // 临时缓存 key 列表(不影响用户内容)
     const tempKeys = [
@@ -211,7 +212,7 @@ Page({
           wx.clearStorageSync();
           wx.showToast({ title: '已清除', icon: 'success' });
           setTimeout(() => {
-            wx.reLaunch({ url: '/miniprogram/pages/index/index' });
+            wx.reLaunch({ url: '/miniprogram/pages/home/home' });
           }, 800);
         }
       }

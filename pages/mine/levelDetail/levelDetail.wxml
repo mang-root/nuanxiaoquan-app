@@ -49,9 +49,9 @@
           <view wx:else class="lv-tag locked-tag">未达成</view>
         </view>
         <view class="lv-rewards">
-          <view wx:for="{{item.rewards}}" wx:for-item="r" wx:key="*this" class="reward-row">
-            <text class="reward-dot">·</text>
-            <text class="reward-text">{{r}}</text>
+          <view wx:for="{{item.rewards}}" wx:for-item="r" wx:key="text" class="reward-row {{r.type}}">
+            <text class="reward-icon">{{r.type === 'avatarDeco' ? r.value : r.type === 'theme' ? '🎨' : r.type === 'title' ? '🏅' : '✨'}}</text>
+            <text class="reward-text">{{r.text}}</text>
           </view>
         </view>
       </view>

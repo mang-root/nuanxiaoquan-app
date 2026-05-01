@@ -363,3 +363,11 @@
   color: #f5a623;
   padding: 4rpx 0 12rpx;
 }
+/* 小馆Banner */
+.shop-banner {
+  background: linear-gradient(135deg, #fff5f8 0%, #f0f5ff 100%);
+  padding: 36rpx 32rpx 24rpx;
+  display: flex; flex-direction: column; gap: 8rpx;
+}
+.shop-banner-title { font-size: 36rpx; font-weight: 700; color: #2d2d2d; }
+.shop-banner-sub { font-size: 24rpx; color: #aaa; }
