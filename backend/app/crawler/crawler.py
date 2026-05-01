@@ -28,9 +28,9 @@ class QuoteCrawler:
             # 方法1：从预设语录库随机选择（备用方案）
             quotes = self._get_preset_quotes()
             
-            # 方法2：爬取知乎（需要注意反爬虫）
-            # zhihu_quotes = self._crawl_zhihu()
-            # quotes.extend(zhihu_quotes)
+            # 方法2：爬取
+            # zhihu_quotes = self._crawl_****()
+            # quotes.extend(****)
             
             # 存入数据库
             for quote_data in quotes:
@@ -117,12 +117,12 @@ class QuoteCrawler:
     
     def _crawl_zhihu(self):
         """
-        爬取知乎（示例，需要根据实际情况调整）
+       
         注意：需要处理反爬虫、登录验证等问题
         """
         try:
             # 这里是示例代码，实际需要更复杂的处理
-            url = '****'
+            url = '******'
             response = requests.get(url, headers=self.headers, timeout=10)
             
             # 解析内容...
@@ -174,7 +174,7 @@ class ResourceCrawler:
             
             # 这里是示例，实际需要对接合法的资源API
             # 可以对接：
-            # 1. B站API - 获取优质课程视频
+            # 1. API - 获取优质课程视频
             # 2. 公开的学习资料网站
             # 3. 教育类公众号API
             
@@ -205,7 +205,7 @@ class ResourceCrawler:
                 'type': '官方爬虫',
                 'title': '高考数学必考知识点总结',
                 'description': '涵盖高考数学所有重点知识点，含公式和例题',
-                'file_url': '#####',
+                'file_url': '*******',
                 'file_type': 'PDF',
                 'education_level': '高中',
                 'subject': '数学',
@@ -216,7 +216,7 @@ class ResourceCrawler:
                 'type': '官方爬虫',
                 'title': '考研英语词汇5500',
                 'description': '考研英语大纲词汇，带音标和例句',
-                'file_url': '********',
+                'file_url': '******',
                 'file_type': 'PDF',
                 'education_level': '考研',
                 'subject': '英语',
