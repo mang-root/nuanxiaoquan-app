@@ -122,7 +122,7 @@ class QuoteCrawler:
         """
         try:
             # 这里是示例代码，实际需要更复杂的处理
-            url = 'https://www.zhihu.com/hot'
+            url = '****'
             response = requests.get(url, headers=self.headers, timeout=10)
             
             # 解析内容...
@@ -205,7 +205,7 @@ class ResourceCrawler:
                 'type': '官方爬虫',
                 'title': '高考数学必考知识点总结',
                 'description': '涵盖高考数学所有重点知识点，含公式和例题',
-                'file_url': 'https://example.com/math.pdf',
+                'file_url': '#####',
                 'file_type': 'PDF',
                 'education_level': '高中',
                 'subject': '数学',
@@ -216,7 +216,7 @@ class ResourceCrawler:
                 'type': '官方爬虫',
                 'title': '考研英语词汇5500',
                 'description': '考研英语大纲词汇，带音标和例句',
-                'file_url': 'https://example.com/english.pdf',
+                'file_url': '********',
                 'file_type': 'PDF',
                 'education_level': '考研',
                 'subject': '英语',
