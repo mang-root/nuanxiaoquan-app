@@ -51,6 +51,10 @@ class AppController extends GetxController {
   // 知源贡献经验值
   final RxInt contributeExp = 0.obs;
 
+  // 是否管理员（后端 isAdmin=true 时解锁回复功能）
+  final RxBool _isAdmin = false.obs;
+  bool get isAdmin => _isAdmin.value;
+
   // 是否已登录
   bool get isLoggedIn => currentUserId.value > 0;
 
@@ -73,6 +77,7 @@ class AppController extends GetxController {
     currentUserName.value = prefs.getString('user_name') ?? '';
     currentUserAvatar.value = prefs.getString('user_avatar') ?? '';
     userGender.value = prefs.getString('user_gender') ?? 'unknown';
+    _isAdmin.value = prefs.getBool('is_admin') ?? false;
     studyLevel.value = prefs.getInt('study_level') ?? 1;
     studyExp.value = prefs.getInt('study_exp') ?? 0;
     contributeLevel.value = prefs.getInt('contribute_level') ?? 1;
@@ -92,6 +97,7 @@ class AppController extends GetxController {
     required String name,
     String avatar = '',
     String gender = 'unknown',
+    bool admin = false,
     int studyLv = 1,
     int studyE = 0,
     int contributeLv = 1,
@@ -101,6 +107,7 @@ class AppController extends GetxController {
     currentUserName.value = name;
     currentUserAvatar.value = avatar;
     userGender.value = gender;
+    _isAdmin.value = admin;
     studyLevel.value = studyLv;
     studyExp.value = studyE;
     contributeLevel.value = contributeLv;
@@ -112,6 +119,7 @@ class AppController extends GetxController {
     await prefs.setString('user_name', name);
     await prefs.setString('user_avatar', avatar);
     await prefs.setString('user_gender', gender);
+    await prefs.setBool('is_admin', admin);
     await prefs.setInt('study_level', studyLv);
     await prefs.setInt('study_exp', studyE);
     await prefs.setInt('contribute_level', contributeLv);
@@ -124,12 +132,14 @@ class AppController extends GetxController {
     currentUserName.value = '';
     currentUserAvatar.value = '';
     userGender.value = 'unknown';
+    _isAdmin.value = false;
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('user_id');
     await prefs.remove('user_name');
     await prefs.remove('user_avatar');
     await prefs.remove('user_gender');
+    await prefs.remove('is_admin');
     await prefs.remove('token');
   }
 

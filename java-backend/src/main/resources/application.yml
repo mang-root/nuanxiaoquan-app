@@ -1,0 +1,70 @@
+spring:
+  application:
+    name: 暖小圈API
+
+  # ======================================================
+  # 数据库配置（改成你的 MySQL 密码）
+  # ======================================================
+  datasource:
+    url: jdbc:mysql://localhost:3306/warmcircle?useUnicode=true&characterEncoding=utf8mb4&serverTimezone=Asia/Shanghai
+    username: root
+    password: your_password          # ← 改这里！你的 MySQL 密码
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update               # 自动创建/更新表结构（首次运行会自动建表）
+    show-sql: false                  # 生产环境关闭 SQL 日志
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+
+  # ======================================================
+  # Redis 配置（可选，不配置也能运行，只是没有限流缓存）
+  # ======================================================
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+      connect-timeout: 3000
+
+# ======================================================
+# 服务端口（默认 8080，避免和 Python 安全服务 8000 冲突）
+# ======================================================
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+# ======================================================
+# 自定义配置
+# ======================================================
+warmcircle:
+  # JWT 密钥（自己随便改，越长越安全，不要泄露）
+  jwt-secret: WarmCircle2024SecretKeyMustBe32CharsLong
+  jwt-expire-hours: 168              # 7天过期
+
+  # Python 安全微服务地址（和 python-security/ 对应）
+  security-service-url: http://localhost:8000
+
+  # 豆包 AI 配置（去火山引擎申请）
+  doubao:
+    access-key: "****"               # ← 替换为你的豆包 AK
+    secret-key: "****"               # ← 替换为你的豆包 SK
+    endpoint: "****"
+    model: doubao-pro-32k
+
+  # DeepSeek 配置
+  deepseek:
+    api-key: "****"                  # ← 替换为你的 DeepSeek 密钥
+    base-url: "****"
+
+  # 管理员账号（用来回答答疑，不要公开）
+  admin-phone: "13800000000"         # ← 改成你自己的手机号
+
+logging:
+  level:
+    com.warmcircle: INFO
+    org.springframework.security: WARN

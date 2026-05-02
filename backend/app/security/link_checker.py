@@ -104,7 +104,7 @@ class LinkSecurityChecker:
         # ════════════════════════════════════════════════════════
         for keyword in self.sensitive_keywords:
             if keyword.lower() in content.lower():
-                return False, f"内容包含敏感词"{keyword}"，禁止发送"
+                return False, f"内容包含敏感词【{keyword}】，禁止发送"
 
         # ════════════════════════════════════════════════════════
         # 第二层检测：提取所有链接并逐个检查

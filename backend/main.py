@@ -1,66 +1,65 @@
 """
-暖小圈APP - 后端主入口
-FastAPI + MySQL + Redis
+╔══════════════════════════════════════════════════════════════╗
+║     暖小圈 Python 安全微服务                                  ║
+║                                                              ║
+║  端口：8000（Java 主后端在 8080）                             ║
+║                                                              ║
+║  职责（Python 保留这部分是因为生态优势）：                    ║
+║    1. 链接安全检测（三层过滤）                                ║
+║    2. WAF（Web 应用防火墙）— 拦截 SQL 注入/XSS/命令注入      ║
+║    3. 爬虫系统（定时抓取语录和资源）                         ║
+║                                                              ║
+║  Java 主后端每次用户发布内容时调用 /security/check           ║
+╚══════════════════════════════════════════════════════════════╝
 """
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import auth, user, study_plan, resource, accounting, menstrual, badge
-from app.utils.database import engine, Base
-from contextlib import asynccontextmanager
+from app.security.link_checker import link_checker
+from app.security.waf import waf
 import uvicorn
 
-# 创建数据库表
-Base.metadata.create_all(bind=engine)
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # 启动时执行
-    print("🚀 暖小圈后端启动成功！")
-    yield
-    # 关闭时执行
-    print("👋 暖小圈后端关闭")
-
 app = FastAPI(
-    title="暖小圈API",
-    description="全人群智能学习助手",
-    version="1.0.0",
-    lifespan=lifespan
+    title="暖小圈安全微服务",
+    description="链接检测 + WAF + 爬虫",
+    version="2.0.0"
 )
 
-# 跨域配置
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# 注册路由
-app.include_router(auth.router, prefix="/api/auth", tags=["认证"])
-app.include_router(user.router, prefix="/api/user", tags=["用户"])
-app.include_router(study_plan.router, prefix="/api/study-plan", tags=["学习计划"])
-app.include_router(resource.router, prefix="/api/resource", tags=["学习资源"])
-app.include_router(accounting.router, prefix="/api/accounting", tags=["记账"])
-app.include_router(menstrual.router, prefix="/api/menstrual", tags=["生理期"])
-app.include_router(badge.router, prefix="/api/badge", tags=["勋章"])
 
-@app.get("/")
-async def root():
-    return {
-        "message": "欢迎使用暖小圈API",
-        "version": "1.0.0",
-        "docs": "/docs"
-    }
+@app.post("/security/check")
+async def check_content(request: Request):
+    """
+    Java 主后端调用此接口检测用户输入内容
+
+    请求体: {"content": "用户输入的文字"}
+    返回: {"safe": true/false, "reason": "拦截原因（安全时为空）"}
+    """
+    body = await request.json()
+    content = body.get("content", "")
+
+    # WAF 优先（拦截攻击代码）
+    waf_safe, waf_reason = waf.check(content)
+    if not waf_safe:
+        return {"safe": False, "reason": f"[WAF] {waf_reason}"}
+
+    # 链接检测（拦截违规网址）
+    link_safe, link_reason = link_checker.check_content(content)
+    if not link_safe:
+        return {"safe": False, "reason": f"[链接] {link_reason}"}
+
+    return {"safe": True, "reason": ""}
+
 
 @app.get("/health")
-async def health_check():
-    return {"status": "healthy"}
+async def health():
+    return {"status": "ok", "service": "暖小圈安全微服务"}
+
 
 if __name__ == "__main__":
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0",
-        port=8000,
-        reload=True
-    )
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
